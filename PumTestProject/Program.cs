@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PumTestProject.Startup;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,8 @@ namespace PumTestProject
     {
         static void Main(string[] args)
         {
-            var config = new HttpSelfHostConfiguration("http://localhost:9876");
-            config.Routes.MapHttpRoute("default",
-                                        "api/{controller}/{id}",
-                                        new { controller = "Home", id = RouteParameter.Optional });
-
-            var server = new HttpSelfHostServer(config);
-            var task = server.OpenAsync();
-            task.Wait();
-
-            Console.WriteLine("Web API Server has started at http://localhost:9876");
-            Console.ReadLine();
+            ServerStarter starter = new ServerStarter();
+            starter.StartTheServer();
         }
     }
 }
