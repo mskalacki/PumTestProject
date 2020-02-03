@@ -8,40 +8,30 @@ using System.Web.Http.Results;
 using Newtonsoft.Json;
 using PumTestProject.Enums;
 using PumTestProject.Model;
+using PumTestProject.Services;
 
 namespace PumTestProject.Controllers
 {
     public class CompanyController : ApiController
     {
-       [HttpGet]
-        public IHttpActionResult Foo(string pos)
+        private IEmployeeService _empService;
+
+        public CompanyController(IEmployeeService empService)
+        {
+            this._empService = empService;
+        }
+
+        [HttpGet]
+        public IHttpActionResult Foo()
         {
 
-            Employee emp = new Employee()
-            {
-                Name = "Marek",
-                Surname = "Wacek",
-                Position = Position.Administrator
-            };
-             if (pos  == Position.Administrator.ToString())
-            {
-                
-                return Ok<Employee>(emp);
-            }
-             else
-            {
+            Employee emp = _empService.GetEmployee();
 
-            return NotFound();
 
-            }
+            return Ok<Employee>(emp);
+        }
          
-            
-
-            //return Json(new
-            //{
-            //    message = "Jupi!",
-            //    count = 2
-            //}) ;
+          
         }
     }
-}
+

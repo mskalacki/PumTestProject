@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PumTestProject.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
+using Unity;
 
 namespace PumTestProject.Startup
 {
@@ -22,8 +24,21 @@ namespace PumTestProject.Startup
             var task = server.OpenAsync();
             task.Wait();
 
+            this.SetDependencyContainer(config);
+
             Console.WriteLine("Web API Server is running at http://localhost:9876");
+
+           
             Console.ReadLine();
+
+        }
+
+        void SetDependencyContainer(HttpSelfHostConfiguration config)
+        {
+            UnityConfig.RegisterComponents();
+            IUnityContainer container = UnityConfig.getContainer();
+
+            config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
         }
     }
 }
