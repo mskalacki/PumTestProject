@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PumTestProject.Enums
 {
    
-        public enum Position
+        public enum JobTitle
         {
             Administrator,
             Developer,

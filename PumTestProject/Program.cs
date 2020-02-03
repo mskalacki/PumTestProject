@@ -15,6 +15,7 @@ namespace PumTestProject
         {
             ServerStarter starter = new ServerStarter();
             starter.StartTheServer();
+            
         }
     }
 }

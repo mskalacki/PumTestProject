@@ -17,7 +17,7 @@ namespace PumTestProject.Services
             {
                 Name = "Marek",
                 Surname = "Wacek",
-                Position = Position.Administrator,
+                JobTitle = JobTitle.Administrator,
                 BirthDate = new DateTime(1980, 01, 02)
             };
         }

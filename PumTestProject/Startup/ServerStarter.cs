@@ -25,6 +25,7 @@ namespace PumTestProject.Startup
             task.Wait();
 
             this.SetDependencyContainer(config);
+            CreateDb();
 
             Console.WriteLine("Web API Server is running at http://localhost:9876");
 
@@ -39,6 +40,12 @@ namespace PumTestProject.Startup
             IUnityContainer container = UnityConfig.getContainer();
 
             config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+        }
+
+        void CreateDb()
+        {
+            PumContext context = new PumContext();
+            context.Database.CreateIfNotExists();
         }
     }
 }
