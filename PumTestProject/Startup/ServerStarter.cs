@@ -16,6 +16,7 @@ namespace PumTestProject.Startup
             config.Routes.MapHttpRoute("default",
                                         "api/{controller}/{id}",
                                         new { controller = "Home", id = RouteParameter.Optional });
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             HttpSelfHostServer server = new HttpSelfHostServer(config);
             var task = server.OpenAsync();
