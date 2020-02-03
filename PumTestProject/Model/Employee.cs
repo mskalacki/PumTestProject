@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PumTestProject.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace PumTestProject.Model
         public string Name { get; set;}
         public string Surname { get; set;}
         public DateTime BirthDate { get; set;}
-        public Enum Position { get; set;}
+        public Position  Position { get; set;}
+
+        
     }
 }

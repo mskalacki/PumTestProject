@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace PumTestProject.Enums
 {
-    public class PositionEnum
-    {
+   
         public enum Position
         {
             Administrator,
@@ -16,5 +15,5 @@ namespace PumTestProject.Enums
             Manager
 
         }
-    }
+    
 }

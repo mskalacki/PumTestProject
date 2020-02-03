@@ -14,19 +14,27 @@ namespace PumTestProject.Controllers
     public class CompanyController : ApiController
     {
        [HttpGet]
-        public IHttpActionResult Foo()
+        public IHttpActionResult Foo(string pos)
         {
 
             Employee emp = new Employee()
             {
                 Name = "Marek",
                 Surname = "Wacek",
-                Position = PositionEnum.Position.Administrator
+                Position = Position.Administrator
             };
-
-         
+             if (pos  == Position.Administrator.ToString())
+            {
+                
+                return Ok<Employee>(emp);
+            }
+             else
+            {
 
             return NotFound();
+
+            }
+         
             
 
             //return Json(new
