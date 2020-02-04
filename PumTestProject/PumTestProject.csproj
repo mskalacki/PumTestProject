@@ -98,6 +98,8 @@
     <Compile Include="DAO\ContextFactory.cs" />
     <Compile Include="DAO\ICompanyDAO.cs" />
     <Compile Include="DAO\IContextFactory.cs" />
+    <Compile Include="DTO\CompanyDTO.cs" />
+    <Compile Include="DTO\CompanySearchDTO.cs" />
     <Compile Include="Enums\PositionEnum.cs" />
     <Compile Include="Migrations\202002032335525_InitianMigration.cs" />
     <Compile Include="Migrations\202002032335525_InitianMigration.designer.cs">

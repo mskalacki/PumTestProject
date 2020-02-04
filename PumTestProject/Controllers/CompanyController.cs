@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Newtonsoft.Json;
+using PumTestProject.DTO;
 using PumTestProject.Enums;
 using PumTestProject.Model;
 using PumTestProject.Services;
@@ -27,23 +28,36 @@ namespace PumTestProject.Controllers
         public IHttpActionResult AllCompanies()
         {
             List<Company> Result = new List<Company>();
-            
-                Result = _companyService.GetAllCompanies();
-                if (Result.Count > 0)
+
+
+            Result = _companyService.GetAllCompanies();
+
+            foreach (Company company in Result)
+            {
+
+            }
+            if (Result.Count == 0)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
                 {
-                    var response = new HttpResponseMessage(HttpStatusCode.NotFound)
-                    {
-                        Content = new StringContent("Company doesn't exist", System.Text.Encoding.UTF8, "text/plain"),
-                        StatusCode = HttpStatusCode.NotFound
-                    };
+                    Content = new StringContent("Company doesn't exist", System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.NotFound
+                };
 
-                    throw new HttpResponseException(response);
-                }
-            
-
-            
+                throw new HttpResponseException(response);
+            }
 
             return Ok<List<Company>>(Result);
+
+        }
+        [HttpPost]
+        public IHttpActionResult Search(CompanySearchDTO queryCriteria)
+        {
+            List<CompanyDTO> Results = new List<CompanyDTO>();
+
+            Results = _companyService.Search(queryCriteria);
+
+            return Ok(Results);
 
         }
 

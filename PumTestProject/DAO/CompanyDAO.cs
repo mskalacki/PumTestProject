@@ -1,4 +1,5 @@
-﻿using PumTestProject.Model;
+﻿using PumTestProject.DTO;
+using PumTestProject.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,45 @@ namespace PumTestProject.DAO
             }
 
             return Result;
+        }
+
+        public List<CompanyDTO>Search(CompanySearchDTO queryCriteria)
+        {
+            List<CompanyDTO> Result = new List<CompanyDTO>();
+
+            using (PumContext context = _factory.CreateContext())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+
+                Result = context.Companies.Select(x =>
+                new
+                {
+                    x.Name,
+                    x.EstablishmentYear,
+                    Employees = x.Employees.ToList()
+
+                }
+
+                ).Select(y =>
+                new CompanyDTO()
+                {
+                    Name = y.Name,
+                    EstablishmentYear = y.EstablishmentYear,
+                    Employees = y.Employees
+                }
+
+                ).Where(c =>
+                c.Name.Contains(queryCriteria.Keyword) || 
+                (c.Employees.Where(o => o.Name.Contains(queryCriteria.Keyword))).FirstOrDefault().Name.Contains(queryCriteria.Keyword)
+                
+                
+                
+                ).ToList();
+            }
+
+
+            return Result;
+
         }
     }
 }

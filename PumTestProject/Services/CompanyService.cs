@@ -1,4 +1,5 @@
 ﻿using PumTestProject.DAO;
+using PumTestProject.DTO;
 using PumTestProject.Model;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ namespace PumTestProject.Services
         public List<Company> GetAllCompanies()
         {
             return _dao.GetAllCompanies();
+        }
+
+        public List<CompanyDTO>Search(CompanySearchDTO queryCriteria)
+        {
+            return _dao.Search(queryCriteria);
         }
     }
 }
