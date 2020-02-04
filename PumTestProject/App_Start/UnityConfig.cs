@@ -1,3 +1,4 @@
+using PumTestProject.DAO;
 using PumTestProject.Services;
 using System.Web.Http;
 using Unity;
@@ -21,6 +22,10 @@ namespace PumTestProject
             // it is NOT necessary to register your controllers
 
             container.RegisterType<IEmployeeService, EmployeeService>();
+            container.RegisterType<IContextFactory, ContextFactory>();
+            container.RegisterType<ICompanyDAO, CompanyDAO>();
+            container.RegisterType<ICompanyService, CompanyService>();
+
 
            //GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

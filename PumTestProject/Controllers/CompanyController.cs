@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,24 +16,38 @@ namespace PumTestProject.Controllers
 {
     public class CompanyController : ApiController
     {
-        private IEmployeeService _empService;
+        private ICompanyService _companyService;
 
-        public CompanyController(IEmployeeService empService)
+        public CompanyController(ICompanyService companyService)
         {
-            this._empService = empService;
+            this._companyService = companyService;
         }
 
         [HttpGet]
-        public IHttpActionResult Foo()
+        public IHttpActionResult AllCompanies()
         {
+            List<Company> Result = new List<Company>();
+            
+                Result = _companyService.GetAllCompanies();
+                if (Result.Count > 0)
+                {
+                    var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("Company doesn't exist", System.Text.Encoding.UTF8, "text/plain"),
+                        StatusCode = HttpStatusCode.NotFound
+                    };
 
-            Employee emp = _empService.GetEmployee();
+                    throw new HttpResponseException(response);
+                }
+            
 
+            
 
-            return Ok<Employee>(emp);
+            return Ok<List<Company>>(Result);
+
         }
-         
-          
-        }
+
+
     }
+}
 

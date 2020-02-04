@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace PumTestProject.Model
 {
+    [Table("employees")]
     public class Employee
     {
+        
         [Key]
         [Column("id")]
         public long Id { get; set;}
@@ -32,7 +34,7 @@ namespace PumTestProject.Model
         [Required]
         public JobTitle  JobTitle { get; set;}
 
-
+        [Column("company")]
         public Company Company { get; set; }
 
         

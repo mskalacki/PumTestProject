@@ -25,7 +25,7 @@ namespace PumTestProject.Startup
             task.Wait();
 
             this.SetDependencyContainer(config);
-            CreateDb();
+            //CreateDb();
 
             Console.WriteLine("Web API Server is running at http://localhost:9876");
 

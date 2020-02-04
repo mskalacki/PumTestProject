@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace PumTestProject.Model
 {
+    [Table("companies")]
     public class Company
     {
         [Key]
@@ -22,7 +23,7 @@ namespace PumTestProject.Model
         [Required]
         public int EstablishmentYear{ get; set; }
 
-        [Column("employees")]
+        
         [Required]
         public virtual ICollection<Employee> Employees { get; set; }
     }

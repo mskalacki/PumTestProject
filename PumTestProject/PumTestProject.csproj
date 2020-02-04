@@ -94,13 +94,24 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="DAO\CompanyDAO.cs" />
+    <Compile Include="DAO\ContextFactory.cs" />
+    <Compile Include="DAO\ICompanyDAO.cs" />
+    <Compile Include="DAO\IContextFactory.cs" />
     <Compile Include="Enums\PositionEnum.cs" />
+    <Compile Include="Migrations\202002032335525_InitianMigration.cs" />
+    <Compile Include="Migrations\202002032335525_InitianMigration.designer.cs">
+      <DependentUpon>202002032335525_InitianMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Company.cs" />
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PumContext.cs" />
+    <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\ICompanyService.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
     <Compile Include="Startup\ServerStarter.cs" />
   </ItemGroup>
@@ -108,7 +119,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202002032335525_InitianMigration.resx">
+      <DependentUpon>202002032335525_InitianMigration.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
