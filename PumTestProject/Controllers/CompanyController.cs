@@ -58,10 +58,29 @@ namespace PumTestProject.Controllers
             Results = _companyService.Search(queryCriteria);
 
             return Ok(Results);
-
         }
 
+       
+        [HttpPost]
+        public HttpResponseMessage Create(Company company)
+        {
+            long id = -1;
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid model");
+            }
 
+            id = _companyService.Create(company);
+
+            if (id != -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.Created, id);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }
 

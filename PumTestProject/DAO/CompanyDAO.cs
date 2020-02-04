@@ -2,6 +2,8 @@
 using PumTestProject.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,43 +49,81 @@ namespace PumTestProject.DAO
             return Result;
         }
 
-        public List<CompanyDTO>Search(CompanySearchDTO queryCriteria)
+        public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
         {
+            queryCriteria.Keyword = queryCriteria.Keyword != null ? queryCriteria.Keyword.ToLower() : "";
+
             List<CompanyDTO> Result = new List<CompanyDTO>();
 
             using (PumContext context = _factory.CreateContext())
             {
                 context.Configuration.ProxyCreationEnabled = false;
-
-                Result = context.Companies.Select(x =>
-                new
+                try
                 {
-                    x.Name,
-                    x.EstablishmentYear,
-                    Employees = x.Employees.ToList()
+                    Result = context.Companies.Select(x =>
+                                    new
+                                    {
+                                        x.Name,
+                                        x.EstablishmentYear,
+                                        Employees = x.Employees.ToList()
+                                    }
 
+                                    ).Select(y =>
+                                    new CompanyDTO()
+                                    {
+                                        Name = y.Name,
+                                        EstablishmentYear = y.EstablishmentYear,
+                                        Employees = y.Employees
+                                    }
+
+                                    ).Where(c =>
+                                    c.Name.ToLower().Contains(queryCriteria.Keyword)
+                                    ||
+                                    (((c.Employees.Where(o =>
+                                    o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword)
+                                    ||
+                                    (c.Employees.Where(o =>
+                                    o.Surname.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword))
+                                     &&
+                                    (((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate >= queryCriteria.EmployeeDateOfBirthFrom
+                                    &&
+                                    ((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
+                                    )))))
+
+                                    ).ToList();
                 }
-
-                ).Select(y =>
-                new CompanyDTO()
+                catch (Exception ex)
                 {
-                    Name = y.Name,
-                    EstablishmentYear = y.EstablishmentYear,
-                    Employees = y.Employees
+                    Console.WriteLine(ex.Message);
                 }
-
-                ).Where(c =>
-                c.Name.ToLower().Contains(queryCriteria.Keyword.ToLower()) || 
-                (c.Employees.Where(o => 
-                o.Name.ToLower().Contains(queryCriteria.Keyword.ToLower()))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword.ToLower()) ||
-                (c.Employees.Where(o =>
-                o.Surname.ToLower().Contains(queryCriteria.Keyword.ToLower()))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword.ToLower())
-                ).ToList();
             }
 
-
             return Result;
+        }
 
+        public long Create(Company company)
+        {
+             long result = -1;
+
+            using (PumContext context = _factory.CreateContext())
+            {
+                using (DbContextTransaction tran = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        context.Companies.Add(company);
+                        context.SaveChanges();
+                        tran.Commit();
+                        result = company.Id;
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return result;
         }
     }
 }

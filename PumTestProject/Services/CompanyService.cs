@@ -27,5 +27,10 @@ namespace PumTestProject.Services
         {
             return _dao.Search(queryCriteria);
         }
+
+        public long Create(Company company)
+        {
+            return _dao.Create(company);
+        }
     }
 }

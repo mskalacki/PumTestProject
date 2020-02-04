@@ -16,8 +16,8 @@ namespace PumTestProject.Startup
         {
             HttpSelfHostConfiguration config = new HttpSelfHostConfiguration("http://localhost:9876");
             config.Routes.MapHttpRoute("default",
-                                        "api/{controller}/{id}",
-                                        new { controller = "Home", id = RouteParameter.Optional });
+                                        "api/{controller}/{action}/{id}",
+                                        new { id = RouteParameter.Optional });
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             HttpSelfHostServer server = new HttpSelfHostServer(config);

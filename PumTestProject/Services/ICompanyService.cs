@@ -8,5 +8,6 @@ namespace PumTestProject.Services
     {
         List<Company> GetAllCompanies();
         List<CompanyDTO> Search(CompanySearchDTO queryCriteria);
+        long Create(Company company);
     }
 }
