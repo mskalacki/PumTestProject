@@ -73,11 +73,11 @@ namespace PumTestProject.DAO
                 }
 
                 ).Where(c =>
-                c.Name.Contains(queryCriteria.Keyword) || 
-                (c.Employees.Where(o => o.Name.Contains(queryCriteria.Keyword))).FirstOrDefault().Name.Contains(queryCriteria.Keyword)
-                
-                
-                
+                c.Name.ToLower().Contains(queryCriteria.Keyword.ToLower()) || 
+                (c.Employees.Where(o => 
+                o.Name.ToLower().Contains(queryCriteria.Keyword.ToLower()))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword.ToLower()) ||
+                (c.Employees.Where(o =>
+                o.Surname.ToLower().Contains(queryCriteria.Keyword.ToLower()))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword.ToLower())
                 ).ToList();
             }
 
