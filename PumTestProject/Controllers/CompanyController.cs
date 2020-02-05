@@ -19,12 +19,12 @@ namespace PumTestProject.Controllers
     public class CompanyController : ApiController
     {
         private ICompanyService _companyService;
-        private IContextFactory _contextFactory;
 
-        public CompanyController(ICompanyService companyService, IContextFactory factory)
+        public CompanyController(ICompanyService companyService)
         {
+
             this._companyService = companyService;
-            this._contextFactory = factory;
+
         }
 
         [HttpGet]
@@ -60,10 +60,11 @@ namespace PumTestProject.Controllers
 
             Results = _companyService.Search(queryCriteria);
 
-            return Ok(Results);
+            return Ok<List<CompanyDTO>>(Results);
+
         }
 
-       
+
         [HttpPost]
         public HttpResponseMessage Create(Company company)
         {
@@ -84,9 +85,9 @@ namespace PumTestProject.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
-        
+
         [HttpPut]
-        public HttpResponseMessage Update (Company company)
+        public HttpResponseMessage Update(Company company)
         {
             bool updateResult = false;
 
@@ -94,11 +95,11 @@ namespace PumTestProject.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid model");
             }
-                if (_companyService.DoesCompanyExists(company.Id))
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Entity not found.");
-                }
-            
+            if (!_companyService.DoesCompanyExists(company.Id))
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "Entity not found.");
+            }
+
             updateResult = _companyService.Update(company);
 
             if (updateResult == true)
@@ -108,6 +109,27 @@ namespace PumTestProject.Controllers
             else
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "Inernal server error.");
+            }
+        }
+
+        [HttpPut]
+        public HttpResponseMessage Delete(Company company)
+        {
+            bool queryResult = false;
+
+            if (!_companyService.DoesCompanyExists(company.Id))
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "Entity not found");
+            }
+
+            queryResult = _companyService.Delete(company);
+            if (queryResult == true)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "Entity deleted");
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Internal server error");
             }
         }
     }

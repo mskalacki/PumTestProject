@@ -212,6 +212,35 @@ namespace PumTestProject.DAO
             return result;
         }
 
+        public bool Delete (Company company)
+        {
+            bool result = false;
+
+            using (PumContext context = _factory.CreateContext())
+            {
+                using (DbContextTransaction tran = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Company companyToDelete = context.Companies.Where(x => x.Id == company.Id).FirstOrDefault();
+                        if (DoesCompanyExists(company.Id))
+                        {
+                            context.Companies.Remove(companyToDelete);
+                            context.SaveChanges();
+                            tran.Commit();
+                            result = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    { 
+                        tran.Rollback();
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return result;
+        }
+
         public bool DoesCompanyExists(long id)
         {
             bool result = false;

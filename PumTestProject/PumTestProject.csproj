@@ -127,6 +127,7 @@
     <Compile Include="Services\ICompanyService.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
     <Compile Include="Startup\ServerStarter.cs" />
+    <Compile Include="Tests\ControllersTests\CompanyControllerTests.cs" />
     <Compile Include="Tests\ServiceTests\CompanyServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

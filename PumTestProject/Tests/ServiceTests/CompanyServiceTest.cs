@@ -80,8 +80,24 @@ namespace PumTestProject.Tests.ServiceTests
             Assert.IsTrue(result);
 
             _dao.Received(1).Update(company);
-            
+
         }
+
+        [Test]
+        public void DeleteTest()
+        {
+
+            Company company = new Company() { Id = 1};
+            _dao.Delete(company).Returns(true);
+
+            bool result = _sut.Delete(company);
+
+            Assert.IsTrue(result);
+
+            _dao.Received(1).Delete(company);
+        }
+
+
         [Test]
         public void DoesCompanyExistsTest()
         {
@@ -91,7 +107,7 @@ namespace PumTestProject.Tests.ServiceTests
 
             bool result = _sut.DoesCompanyExists(id);
 
-                Assert.IsTrue(result);
+            Assert.IsTrue(result);
 
             _dao.Received(1).DoesCompanyExists(id);
 

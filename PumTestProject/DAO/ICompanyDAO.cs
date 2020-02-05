@@ -10,6 +10,7 @@ namespace PumTestProject.DAO
         List<CompanyDTO> Search(CompanySearchDTO queryCriteria);
         long Create(Company company);
         bool Update(Company company);
+        bool Delete(Company company);
         bool DoesCompanyExists(long id);
     }
 }
