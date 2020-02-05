@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
 using Unity;
+using static PumTestProject.Validators.BasicAuthenticationAttibute;
 
 namespace PumTestProject.Startup
 {
@@ -19,6 +20,7 @@ namespace PumTestProject.Startup
                                         "api/{controller}/{action}/{id}",
                                         new { id = RouteParameter.Optional });
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+            //config.Filters.Add(new BasicAuthenticationAttribute());
 
             HttpSelfHostServer server = new HttpSelfHostServer(config);
             var task = server.OpenAsync();

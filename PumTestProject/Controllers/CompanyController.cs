@@ -13,6 +13,7 @@ using PumTestProject.DTO;
 using PumTestProject.Enums;
 using PumTestProject.Model;
 using PumTestProject.Services;
+using static PumTestProject.Validators.BasicAuthenticationAttibute;
 
 namespace PumTestProject.Controllers
 {
@@ -64,7 +65,7 @@ namespace PumTestProject.Controllers
 
         }
 
-
+        [BasicAuthentication]
         [HttpPost]
         public HttpResponseMessage Create(Company company)
         {
@@ -86,6 +87,7 @@ namespace PumTestProject.Controllers
             }
         }
 
+        [BasicAuthentication]
         [HttpPut]
         public HttpResponseMessage Update(Company company)
         {
@@ -112,6 +114,7 @@ namespace PumTestProject.Controllers
             }
         }
 
+        [BasicAuthentication]
         [HttpPut]
         public HttpResponseMessage Delete(long id)
         {
