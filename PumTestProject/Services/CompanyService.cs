@@ -33,9 +33,13 @@ namespace PumTestProject.Services
             return _dao.Create(company);
         }
 
-        public bool Update (Company company)
+        public bool Update ( Company company)
         {
             return _dao.Update(company);
+        }
+        public bool DoesCompanyExists(long id)
+        {
+            return _dao.DoesCompanyExists(id);
         }
     }
 }

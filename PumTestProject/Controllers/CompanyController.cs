@@ -94,15 +94,12 @@ namespace PumTestProject.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid model");
             }
-            updateResult = _companyService.Update(company);
-
-            using (PumContext context = _contextFactory.CreateContext())
-            {
-                if (context.Companies.Where(x=>x.Id == company.Id).FirstOrDefault() == null)
+                if (_companyService.DoesCompanyExists(company.Id))
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Entity not found.");
                 }
-            }
+            
+            updateResult = _companyService.Update(company);
 
             if (updateResult == true)
             {

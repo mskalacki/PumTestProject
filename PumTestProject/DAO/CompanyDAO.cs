@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,8 +61,7 @@ namespace PumTestProject.DAO
                 context.Configuration.ProxyCreationEnabled = false;
                 try
                 {
-                    Func<CompanyDTO, bool> companyContainsName = (c) =>
-                                    c.Name.ToLower().Contains(queryCriteria.Keyword);
+                    Func<CompanyDTO, bool> companyContainsName = (c) =>  c.Name.ToLower().Contains(queryCriteria.Keyword);
 
                     Func<CompanyDTO, bool> employeesContainsName = (c) => (c.Employees.Where(o =>
                                     o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword);
@@ -90,8 +90,9 @@ namespace PumTestProject.DAO
                                         Employees = y.Employees
                                     }
 
-                                    ).Where(c =>
-                                    companyContainsName(c) ||( employeesContainsName(c) || employeesContainsSurname(c) && datesBeteen(c) ) ).ToList();
+                                    )
+                                    .Where(c =>
+                                    companyContainsName(c) ||( employeesContainsName(c) || employeesContainsSurname(c) || datesBeteen(c) ) ).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -190,7 +191,7 @@ namespace PumTestProject.DAO
                     {
                         Company companyFromDb = context.Companies.Where(x => x.Id == company.Id).FirstOrDefault();
 
-                        if (companyFromDb != null)
+                        if (DoesCompanyExists(company.Id))
                         {
                             company.Id = companyFromDb.Id;
                             context.Entry(companyFromDb).CurrentValues.SetValues(company);
@@ -209,6 +210,17 @@ namespace PumTestProject.DAO
                 }
             }
             return result;
+        }
+
+        public bool DoesCompanyExists(long id)
+        {
+            bool result = false;
+            using( PumContext context = _factory.CreateContext())
+            {
+                result = context.Companies.Where(x => x.Id == id).FirstOrDefault() != null ? true : false;
+            }
+            return result;
+            
         }
     }
 }
