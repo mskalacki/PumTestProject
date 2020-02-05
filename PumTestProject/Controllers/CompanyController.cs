@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Newtonsoft.Json;
+using PumTestProject.DAO;
 using PumTestProject.DTO;
 using PumTestProject.Enums;
 using PumTestProject.Model;
@@ -18,10 +19,12 @@ namespace PumTestProject.Controllers
     public class CompanyController : ApiController
     {
         private ICompanyService _companyService;
+        private IContextFactory _contextFactory;
 
-        public CompanyController(ICompanyService companyService)
+        public CompanyController(ICompanyService companyService, IContextFactory factory)
         {
             this._companyService = companyService;
+            this._contextFactory = factory;
         }
 
         [HttpGet]
@@ -79,6 +82,35 @@ namespace PumTestProject.Controllers
             else
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
+        
+        [HttpPut]
+        public HttpResponseMessage Update (Company company)
+        {
+            bool updateResult = false;
+
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid model");
+            }
+            updateResult = _companyService.Update(company);
+
+            using (PumContext context = _contextFactory.CreateContext())
+            {
+                if (context.Companies.Where(x=>x.Id == company.Id).FirstOrDefault() == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Entity not found.");
+                }
+            }
+
+            if (updateResult == true)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "Entity updated");
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Inernal server error.");
             }
         }
     }

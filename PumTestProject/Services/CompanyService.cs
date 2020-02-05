@@ -32,5 +32,10 @@ namespace PumTestProject.Services
         {
             return _dao.Create(company);
         }
+
+        public bool Update (Company company)
+        {
+            return _dao.Update(company);
+        }
     }
 }

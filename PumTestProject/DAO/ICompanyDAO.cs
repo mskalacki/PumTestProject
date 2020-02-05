@@ -9,5 +9,6 @@ namespace PumTestProject.DAO
         List<Company> GetAllCompanies();
         List<CompanyDTO> Search(CompanySearchDTO queryCriteria);
         long Create(Company company);
+        bool Update(Company company);
     }
 }

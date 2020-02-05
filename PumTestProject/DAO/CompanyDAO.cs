@@ -60,6 +60,20 @@ namespace PumTestProject.DAO
                 context.Configuration.ProxyCreationEnabled = false;
                 try
                 {
+                    Func<CompanyDTO, bool> companyContainsName = (c) =>
+                                    c.Name.ToLower().Contains(queryCriteria.Keyword);
+
+                    Func<CompanyDTO, bool> employeesContainsName = (c) => (c.Employees.Where(o =>
+                                    o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword);
+
+                    Func<CompanyDTO, bool> employeesContainsSurname = (c) => (c.Employees.Where(o =>
+                                    o.Surname.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword);
+
+                    Func<CompanyDTO, bool> datesBeteen = (c) => c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate >= queryCriteria.EmployeeDateOfBirthFrom
+                                    &&
+                                    ((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
+                                    );
+
                     Result = context.Companies.Select(x =>
                                     new
                                     {
@@ -77,20 +91,7 @@ namespace PumTestProject.DAO
                                     }
 
                                     ).Where(c =>
-                                    c.Name.ToLower().Contains(queryCriteria.Keyword)
-                                    ||
-                                    (((c.Employees.Where(o =>
-                                    o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword)
-                                    ||
-                                    (c.Employees.Where(o =>
-                                    o.Surname.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword))
-                                     &&
-                                    (((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate >= queryCriteria.EmployeeDateOfBirthFrom
-                                    &&
-                                    ((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
-                                    )))))
-
-                                    ).ToList();
+                                    companyContainsName(c) ||( employeesContainsName(c) || employeesContainsSurname(c) && datesBeteen(c) ) ).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +104,7 @@ namespace PumTestProject.DAO
 
         public long Create(Company company)
         {
-             long result = -1;
+            long result = -1;
 
             using (PumContext context = _factory.CreateContext())
             {
@@ -119,6 +120,38 @@ namespace PumTestProject.DAO
                     catch (Exception ex)
                     {
                         tran.Rollback();
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public bool Update(Company company)
+        {
+            bool result = false;
+            using (PumContext context = _factory.CreateContext())
+            {
+                using (DbContextTransaction tran = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Company companyFromDb = context.Companies.Where(x => x.Id == company.Id).FirstOrDefault();
+
+                        if (companyFromDb != null)
+                        {
+                            company.Id = companyFromDb.Id;
+                            context.Entry(companyFromDb).CurrentValues.SetValues(company);
+                            context.SaveChanges();
+                            tran.Commit();
+                            result = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        tran.Rollback();
+                        result = false;
                         Console.WriteLine(ex.Message);
                     }
                 }
