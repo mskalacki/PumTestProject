@@ -24,7 +24,7 @@ namespace PumTestProject.Model
         public int EstablishmentYear{ get; set; }
 
         
-        [Required]
+        
         public virtual ICollection<Employee> Employees { get; set; }
     }
 }

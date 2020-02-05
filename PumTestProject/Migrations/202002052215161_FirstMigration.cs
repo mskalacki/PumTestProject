@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitianMigration : DbMigration
+    public partial class FirstMigration : DbMigration
     {
         public override void Up()
         {
@@ -26,10 +26,10 @@
                         surname = c.String(nullable: false),
                         birthdate = c.DateTime(nullable: false),
                         jobtitle = c.Int(nullable: false),
-                        Company_Id = c.Long(),
+                        Company_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.id)
-                .ForeignKey("public.companies", t => t.Company_Id)
+                .ForeignKey("public.companies", t => t.Company_Id, cascadeDelete: true)
                 .Index(t => t.Company_Id);
             
         }

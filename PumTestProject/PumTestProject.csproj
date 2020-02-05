@@ -112,9 +112,9 @@
     <Compile Include="DTO\CompanyDTO.cs" />
     <Compile Include="DTO\CompanySearchDTO.cs" />
     <Compile Include="Enums\PositionEnum.cs" />
-    <Compile Include="Migrations\202002032335525_InitianMigration.cs" />
-    <Compile Include="Migrations\202002032335525_InitianMigration.designer.cs">
-      <DependentUpon>202002032335525_InitianMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202002052215161_FirstMigration.cs" />
+    <Compile Include="Migrations\202002052215161_FirstMigration.designer.cs">
+      <DependentUpon>202002052215161_FirstMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Company.cs" />
@@ -135,12 +135,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002032335525_InitianMigration.resx">
-      <DependentUpon>202002032335525_InitianMigration.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <EmbeddedResource Include="Migrations\202002052215161_FirstMigration.resx">
+      <DependentUpon>202002052215161_FirstMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

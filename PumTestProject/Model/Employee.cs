@@ -34,7 +34,9 @@ namespace PumTestProject.Model
         [Required]
         public JobTitle  JobTitle { get; set;}
 
+        
         [Column("company")]
+        [Required]
         public Company Company { get; set; }
 
         
