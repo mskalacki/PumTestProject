@@ -38,9 +38,9 @@ namespace PumTestProject.Services
             return _dao.Update(company);
         }
 
-        public bool Delete(Company company)
+        public bool Delete(long id)
         {
-            return _dao.Delete(company);
+            return _dao.Delete(id);
         }
 
         public bool DoesCompanyExists(long id)

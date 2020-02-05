@@ -49,41 +49,41 @@ namespace PumTestProject.Tests.ControllersTests
         [Test]
         public void Delete_CompanyDoesntExist_Test()
         {
-            Company company = new Company() { Id = 2};
-            _service.DoesCompanyExists(company.Id).Returns(false);
-            HttpResponseMessage result = _sut.Delete(company);
+            long id = 2;
+            _service.DoesCompanyExists(id).Returns(false);
+            HttpResponseMessage result = _sut.Delete(id);
 
             Assert.AreEqual(result.StatusCode, HttpStatusCode.NotFound);
            
-            _service.Received(1).DoesCompanyExists(company.Id);
-            _service.ReceivedWithAnyArgs(0).Delete(company);
+            _service.Received(1).DoesCompanyExists(id);
+            _service.ReceivedWithAnyArgs(0).Delete(id);
         }
 
         [Test]
         public void Delete_CompanyExistsQuerySucess_Test()
         {
-            Company company = new Company() { Id= 1};
-            _service.Delete(company).Returns(true);
-            _service.DoesCompanyExists(company.Id).Returns(true);
-            HttpResponseMessage result = _sut.Delete(company);
+            long id = 2;
+            _service.Delete(id).Returns(true);
+            _service.DoesCompanyExists(id).Returns(true);
+            HttpResponseMessage result = _sut.Delete(id);
 
             Assert.AreEqual(result.StatusCode, HttpStatusCode.OK);
 
-            _service.Received(1).Delete(company);
-            _service.Received(1).DoesCompanyExists(company.Id);
+            _service.Received(1).Delete(id);
+            _service.Received(1).DoesCompanyExists(id);
         }
         [Test]
         public void Delete_CompanyExistsQueryFalse_Test()
         {
-            Company company = new Company() { Id = 1 };
-            _service.Delete(company).Returns(false);
-            _service.DoesCompanyExists(company.Id).Returns(true);
-            HttpResponseMessage result = _sut.Delete(company);
+            long id = 2;
+            _service.Delete(id).Returns(false);
+            _service.DoesCompanyExists(id).Returns(true);
+            HttpResponseMessage result = _sut.Delete(id);
 
             Assert.AreEqual(result.StatusCode, HttpStatusCode.InternalServerError);
 
-            _service.Received(1).Delete(company);
-            _service.Received(1).DoesCompanyExists(company.Id);
+            _service.Received(1).Delete(id);
+            _service.Received(1).DoesCompanyExists(id);
         }
 
         [Test]
@@ -91,7 +91,6 @@ namespace PumTestProject.Tests.ControllersTests
         {
             _sut.ModelState.AddModelError("key", "error");
             Company company = new Company() { Id = 2};
-           // _service.DoesCompanyExists(company.Id).Returns(true);
 
            HttpResponseMessage result = _sut.Update(company);
 

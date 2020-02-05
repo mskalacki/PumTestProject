@@ -87,14 +87,14 @@ namespace PumTestProject.Tests.ServiceTests
         public void DeleteTest()
         {
 
-            Company company = new Company() { Id = 1};
-            _dao.Delete(company).Returns(true);
+            long id = 2;
+            _dao.Delete(id).Returns(true);
 
-            bool result = _sut.Delete(company);
+            bool result = _sut.Delete(id);
 
             Assert.IsTrue(result);
 
-            _dao.Received(1).Delete(company);
+            _dao.Received(1).Delete(id);
         }
 
 

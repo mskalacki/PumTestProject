@@ -113,16 +113,16 @@ namespace PumTestProject.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Delete(Company company)
+        public HttpResponseMessage Delete(long id)
         {
             bool queryResult = false;
 
-            if (!_companyService.DoesCompanyExists(company.Id))
+            if (!_companyService.DoesCompanyExists(id))
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, "Entity not found");
             }
 
-            queryResult = _companyService.Delete(company);
+            queryResult = _companyService.Delete(id);
             if (queryResult == true)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, "Entity deleted");

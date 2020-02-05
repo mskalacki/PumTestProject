@@ -212,7 +212,7 @@ namespace PumTestProject.DAO
             return result;
         }
 
-        public bool Delete (Company company)
+        public bool Delete (long id)
         {
             bool result = false;
 
@@ -222,8 +222,8 @@ namespace PumTestProject.DAO
                 {
                     try
                     {
-                        Company companyToDelete = context.Companies.Where(x => x.Id == company.Id).FirstOrDefault();
-                        if (DoesCompanyExists(company.Id))
+                        Company companyToDelete = context.Companies.Where(x => x.Id == id).FirstOrDefault();
+                        if (DoesCompanyExists(id))
                         {
                             context.Companies.Remove(companyToDelete);
                             context.SaveChanges();
