@@ -102,6 +102,58 @@ namespace PumTestProject.DAO
             return Result;
         }
 
+        //public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
+        //{
+        //    queryCriteria.Keyword = queryCriteria.Keyword != null ? queryCriteria.Keyword.ToLower() : "";
+
+        //    List<CompanyDTO> Result = new List<CompanyDTO>();
+
+        //    using (PumContext context = _factory.CreateContext())
+        //    {
+        //        context.Configuration.ProxyCreationEnabled = false;
+        //        try
+        //        {
+        //            Result = context.Companies.Select(x =>
+        //                            new
+        //                            {
+        //                                x.Name,
+        //                                x.EstablishmentYear,
+        //                                Employees = x.Employees.ToList()
+        //                            }
+
+        //                            ).Select(y =>
+        //                            new CompanyDTO()
+        //                            {
+        //                                Name = y.Name,
+        //                                EstablishmentYear = y.EstablishmentYear,
+        //                                Employees = y.Employees
+        //                            }
+
+        //                            ).Where(c =>
+        //                            c.Name.ToLower().Contains(queryCriteria.Keyword)
+        //                            ||
+        //                            (((c.Employees.Where(o =>
+        //                            o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword)
+        //                            ||
+        //                            (c.Employees.Where(o =>
+        //                            o.Surname.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword))
+        //                             &&
+        //                            (((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate >= queryCriteria.EmployeeDateOfBirthFrom
+        //                            &&
+        //                            ((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
+        //                            )))))
+
+        //                            ).ToList();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.Message);
+        //        }
+        //    }
+
+        //    return Result;
+        //}
+
         public long Create(Company company)
         {
             long result = -1;
