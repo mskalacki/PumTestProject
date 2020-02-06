@@ -9,10 +9,10 @@ namespace PumTestProject.Enums
    
         public enum JobTitle
         {
-            Administrator =1,
-            Developer=2,
-            Architect=3,
-            Manager=4
+            Administrator,
+            Developer,
+            Architect,
+            Manager
 
         }
     
