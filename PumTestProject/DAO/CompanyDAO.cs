@@ -50,58 +50,58 @@ namespace PumTestProject.DAO
             return Result;
         }
 
-        public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
-        {
-            queryCriteria.Keyword = queryCriteria.Keyword != null ? queryCriteria.Keyword.ToLower() : "";
+        //public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
+        //{
+        //    queryCriteria.Keyword = queryCriteria.Keyword != null ? queryCriteria.Keyword.ToLower() : "";
 
-            List<CompanyDTO> Result = new List<CompanyDTO>();
+        //    List<CompanyDTO> Result = new List<CompanyDTO>();
 
-            using (PumContext context = _factory.CreateContext())
-            {
-                context.Configuration.ProxyCreationEnabled = false;
-                try
-                {
-                    Func<CompanyDTO, bool> companyContainsName = (c) =>  c.Name.ToLower().Contains(queryCriteria.Keyword);
+        //    using (PumContext context = _factory.CreateContext())
+        //    {
+        //        context.Configuration.ProxyCreationEnabled = false;
+        //        try
+        //        {
+        //            Func<CompanyDTO, bool> companyContainsName = (c) =>  c.Name.ToLower().Contains(queryCriteria.Keyword);
 
-                    Func<CompanyDTO, bool> employeesContainsName = (c) => (c.Employees.Where(o =>
-                                    o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword);
+        //            Func<CompanyDTO, bool> employeesContainsName = (c) => (c.Employees.Where(o =>
+        //                            o.Name.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword);
 
-                    Func<CompanyDTO, bool> employeesContainsSurname = (c) => (c.Employees.Where(o =>
-                                    o.Surname.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword);
+        //            Func<CompanyDTO, bool> employeesContainsSurname = (c) => (c.Employees.Where(o =>
+        //                            o.Surname.ToLower().Contains(queryCriteria.Keyword))).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword);
 
-                    Func<CompanyDTO, bool> datesBeteen = (c) => c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate >= queryCriteria.EmployeeDateOfBirthFrom
-                                    &&
-                                    ((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
-                                    );
+        //            Func<CompanyDTO, bool> datesBeteen = (c) => c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate >= queryCriteria.EmployeeDateOfBirthFrom
+        //                            &&
+        //                            ((c.Employees.Where(e => e.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && e.BirthDate <= queryCriteria.EmployeeDateOfBirthTo).FirstOrDefault().BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
+        //                            );
 
-                    Result = context.Companies.Select(x =>
-                                    new
-                                    {
-                                        x.Name,
-                                        x.EstablishmentYear,
-                                        Employees = x.Employees.ToList()
-                                    }
+        //            Result = context.Companies.Select(x =>
+        //                            new
+        //                            {
+        //                                x.Name,
+        //                                x.EstablishmentYear,
+        //                                Employees = x.Employees.ToList()
+        //                            }
 
-                                    ).Select(y =>
-                                    new CompanyDTO()
-                                    {
-                                        Name = y.Name,
-                                        EstablishmentYear = y.EstablishmentYear,
-                                        Employees = y.Employees
-                                    }
+        //                            ).Select(y =>
+        //                            new CompanyDTO()
+        //                            {
+        //                                Name = y.Name,
+        //                                EstablishmentYear = y.EstablishmentYear,
+        //                                Employees = y.Employees
+        //                            }
 
-                                    )
-                                    .Where(c =>
-                                    companyContainsName(c) ||( employeesContainsName(c) || employeesContainsSurname(c) || datesBeteen(c) ) ).ToList();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+        //                            )
+        //                            .Where(c =>
+        //                            companyContainsName(c) ||( employeesContainsName(c) || employeesContainsSurname(c) || datesBeteen(c) ) ).ToList();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.Message);
+        //        }
+        //    }
 
-            return Result;
-        }
+        //    return Result;
+        //}
 
         //public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
         //{
@@ -154,6 +154,80 @@ namespace PumTestProject.DAO
 
         //    return Result;
         //}
+
+        public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
+        {
+            List<CompanyDTO> Result = new List<CompanyDTO>();
+
+            using (PumContext context = _factory.CreateContext())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+                try
+                {
+                    if (!string.IsNullOrEmpty(queryCriteria.Keyword))
+                    {
+                        queryCriteria.Keyword = queryCriteria.Keyword.ToLower();
+
+                        Result = context.Companies.Select(company =>
+                                        new
+                                        {
+                                            company.Name,
+                                            company.EstablishmentYear,
+                                            Employees = company.Employees.ToList()
+                                        }
+
+                                        ).Select(company =>
+                                        new CompanyDTO()
+                                        {
+                                            Name = company.Name,
+                                            EstablishmentYear = company.EstablishmentYear,
+                                            Employees = company.Employees
+                                        }
+
+                                        )
+                                        .Where(company =>
+                                        company.Name.ToLower().Contains(queryCriteria.Keyword)
+                                        ||
+                                         company.Employees.Where(employee => employee.Name.ToLower().Contains(queryCriteria.Keyword)).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword)
+                                        ||
+                                         company.Employees.Where(employee => employee.Surname.ToLower().Contains(queryCriteria.Keyword)).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword)
+
+                                       ).ToList();
+                    }
+                    else
+                    {
+                        queryCriteria.EmployeeDateOfBirthTo = queryCriteria.EmployeeDateOfBirthTo == new DateTime(0001,01,01) ? new DateTime(9999,12,31) : queryCriteria.EmployeeDateOfBirthTo;
+                        Result = context.Companies.Select(company =>
+                                        new
+                                        {
+                                            company.Name,
+                                            company.EstablishmentYear,
+                                            Employees = company.Employees.ToList()
+                                        }
+
+                                        ).Select(company =>
+                                        new CompanyDTO()
+                                        {
+                                            Name = company.Name,
+                                            EstablishmentYear = company.EstablishmentYear,
+                                            Employees = company.Employees
+                                        }
+
+                                        )
+                                        .Where(company =>
+                                        company.Employees.Any(employee => employee.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && employee.BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
+                                       ).ToList();
+
+                      
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return Result;
+        }
 
         public long Create(Company company)
         {

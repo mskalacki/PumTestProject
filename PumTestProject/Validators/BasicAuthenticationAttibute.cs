@@ -56,8 +56,7 @@ namespace PumTestProject.Validators
                     }
                     else
                     {
-                        actionContext.Response = actionContext.Request
-                            .CreateResponse(HttpStatusCode.Unauthorized);
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
                 }
             }
