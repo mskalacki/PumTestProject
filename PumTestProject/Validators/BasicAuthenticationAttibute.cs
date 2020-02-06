@@ -32,8 +32,7 @@ namespace PumTestProject.Validators
                 }
                 else
                 {  
-                    string authenticationToken = actionContext.Request.Headers
-                        .Authorization.Parameter;
+                    string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
                     
                     string decodedAuthenticationToken = Encoding.UTF8.GetString(
                         Convert.FromBase64String(authenticationToken));

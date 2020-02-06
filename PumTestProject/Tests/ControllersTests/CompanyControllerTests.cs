@@ -72,6 +72,7 @@ namespace PumTestProject.Tests.ControllersTests
             _service.Received(1).Delete(id);
             _service.Received(1).DoesCompanyExists(id);
         }
+
         [Test]
         public void Delete_CompanyExistsQueryFalse_Test()
         {
@@ -140,13 +141,6 @@ namespace PumTestProject.Tests.ControllersTests
 
             _service.Received(1).DoesCompanyExists(company.Id);
             _service.Received(1).Update(company);
-
         }
-        
-
-
-
-
-
     }
 }

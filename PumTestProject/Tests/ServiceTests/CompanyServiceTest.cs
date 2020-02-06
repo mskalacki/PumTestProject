@@ -38,10 +38,10 @@ namespace PumTestProject.Tests.ServiceTests
             _dao.Received(1).GetAllCompanies();
 
         }
+
         [Test]
         public void SearchTest()
         {
-
             CompanySearchDTO queryCriteria = new CompanySearchDTO();
             List<CompanyDTO> elementsFromb = new List<CompanyDTO>();
             _dao.Search(queryCriteria).Returns(elementsFromb);
@@ -53,6 +53,7 @@ namespace PumTestProject.Tests.ServiceTests
             _dao.Received(1).Search(queryCriteria);
 
         }
+
         [Test]
         public void CreateTest()
         {
@@ -65,12 +66,11 @@ namespace PumTestProject.Tests.ServiceTests
             Assert.AreEqual(result, id);
 
             _dao.Received(1).Create(company);
-
         }
+
         [Test]
         public void UpdateTest()
         {
-
             Company company = new Company();
 
             bool queryResult = true;
@@ -80,13 +80,11 @@ namespace PumTestProject.Tests.ServiceTests
             Assert.IsTrue(result);
 
             _dao.Received(1).Update(company);
-
         }
 
         [Test]
         public void DeleteTest()
         {
-
             long id = 2;
             _dao.Delete(id).Returns(true);
 
@@ -110,9 +108,6 @@ namespace PumTestProject.Tests.ServiceTests
             Assert.IsTrue(result);
 
             _dao.Received(1).DoesCompanyExists(id);
-
         }
-
-
     }
 }

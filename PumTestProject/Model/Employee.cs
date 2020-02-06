@@ -16,7 +16,6 @@ namespace PumTestProject.Model
         [Key]
         [Column("id")]
         public long Id { get; set;}
-
         
         [Column("name")]
         [Required]

@@ -26,13 +26,12 @@ namespace PumTestProject.Startup
             task.Wait();
 
             this.SetDependencyContainer(config);
-            //CreateDb();
+            this.CreateDb();
 
+            Console.WriteLine("Console Web Api self - hosted application.");
             Console.WriteLine("Web API Server is running at http://localhost:9876");
 
-           
             Console.ReadLine();
-
         }
 
         void SetDependencyContainer(HttpSelfHostConfiguration config)

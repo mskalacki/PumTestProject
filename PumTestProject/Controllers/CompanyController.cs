@@ -23,9 +23,7 @@ namespace PumTestProject.Controllers
 
         public CompanyController(ICompanyService companyService)
         {
-
             this._companyService = companyService;
-
         }
 
         [HttpGet]

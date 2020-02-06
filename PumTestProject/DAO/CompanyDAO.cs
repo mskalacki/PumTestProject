@@ -47,11 +47,9 @@ namespace PumTestProject.DAO
                 }
                 ).ToList();
             }
-
             return Result;
         }
 
-       
 
         public List<CompanyDTO> Search(CompanySearchDTO queryCriteria)
         {
@@ -81,7 +79,6 @@ namespace PumTestProject.DAO
                                             EstablishmentYear = company.EstablishmentYear,
                                             Employees = company.Employees
                                         }
-
                                         )
                                         .Where(company =>
                                         company.Name.ToLower().Contains(queryCriteria.Keyword)
@@ -89,10 +86,8 @@ namespace PumTestProject.DAO
                                          company.Employees.Where(employee => employee.Name.ToLower().Contains(queryCriteria.Keyword)).FirstOrDefault().Name.ToLower().Contains(queryCriteria.Keyword)
                                         ||
                                          company.Employees.Where(employee => employee.Surname.ToLower().Contains(queryCriteria.Keyword)).FirstOrDefault().Surname.ToLower().Contains(queryCriteria.Keyword)
-
                                        ).ToList();
                     }
-                  
                     else if(queryCriteria.EmployeeDateOfBirthFrom != new DateTime(0001, 01, 01) && queryCriteria.EmployeeDateOfBirthTo == new DateTime(0001, 01, 01))
                     {
                         queryCriteria.EmployeeDateOfBirthTo = queryCriteria.EmployeeDateOfBirthTo == new DateTime(0001, 01, 01) ? new DateTime(9999, 12, 31) : queryCriteria.EmployeeDateOfBirthTo;
@@ -111,12 +106,9 @@ namespace PumTestProject.DAO
                                             EstablishmentYear = company.EstablishmentYear,
                                             Employees = company.Employees
                                         }
-
                                         )
                                         .Where(company =>
                                         company.Employees.Any(employee => employee.BirthDate >= queryCriteria.EmployeeDateOfBirthFrom && employee.BirthDate <= queryCriteria.EmployeeDateOfBirthTo)
-                                       
-
                                        ).ToList();
                     }
                     else
@@ -128,7 +120,6 @@ namespace PumTestProject.DAO
                                             company.EstablishmentYear,
                                             Employees = company.Employees.ToList()
                                         }
-
                                         ).Select(company =>
                                         new CompanyDTO()
                                         {
@@ -139,9 +130,7 @@ namespace PumTestProject.DAO
                                         )
                                         .Where(company =>
                                         company.Employees.Any(employee => (employee.JobTitle) == queryCriteria.EmployeeJobTitles.Where(criteriaJobTitle => (int)criteriaJobTitle == (int)employee.JobTitle).FirstOrDefault())      
-
                                        ).ToList();
-
                     }
                 }
                 catch (Exception ex)
@@ -246,7 +235,6 @@ namespace PumTestProject.DAO
                 result = context.Companies.Where(x => x.Id == id).FirstOrDefault() != null ? true : false;
             }
             return result;
-            
         }
     }
 }
